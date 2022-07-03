@@ -12,4 +12,4 @@ const find = (id) => productos.find(producto => producto.id == id);//recibe un i
 module.exports = {
     all,
     find
-};//disponibilizo los metodos para usarlo desde otro lado
+};//disponibilizo los metodos para usarlos desde otra parte del proyecto

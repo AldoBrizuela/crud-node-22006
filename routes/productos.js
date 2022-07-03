@@ -1,11 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const productos = require('./productos');//solo puedo usar de este modulo lo que exporte en el mismo (funciones all y find)
+const productos = require('../productos');//solo puedo usar de este modulo lo que exporte en el mismo (funciones all y find)
 
-router.get('/', (req,res) => {
-    res.render('index');//renderizo en pantalla ula vista index
-}); //que hago cuando entro a la url / (ruta)
 
 router.get('/productos',(req,res)=>{
     res.render('productos/index', {productos:productos.all()});//renderizo en pantalla la vista index, uso la funcion all creada en el modulo productos.js
@@ -25,4 +22,4 @@ router.get('/productos/:id',(req,res)=>{
 });//uso parametros en la ruta para acceder a items en la base de datos
 
 
-module.exports = router;//disponibilizo modulo  router para poder acceder a las rutas 
+module.exports = router;//disponibilizo modulo  router para poder acceder a las rutas desde otros lugares del proyecto

@@ -1,10 +1,10 @@
-require('dotenv').config();
+require('dotenv').config();//lo agrego al proyecto para poder usar variables de entorno que estan en el archivo .env
 
 const express = require('express');
 const app = express();
-const expressLayouts = require('express-ejs-layouts');
+const expressLayouts = require('express-ejs-layouts');//modulo para manejar vistas por ejemplo para manejar contenido dinamico
 
-app.set('view engine', 'ejs');//aviso a express que voy a usar este modulo para manejar vistas por ejemplo para menejar contenido dinamico
+app.set('view engine', 'ejs');//aviso a express que voy a usar este modulo para manejar vistas por ejemplo para manejar contenido dinamico
 
 //------Inicio middlewares---funcionalidades que voy tomando por capas---//
 
@@ -12,7 +12,11 @@ app.use(express.static(__dirname + '/public')); //me permite acceder a archivos 
 
 app.use(expressLayouts);//cuando tenga una vista primero va a traer este layout
 
-app.use(require('./router'));//uso el modulo router creado usando el router de express para poder agrupar las rutas en router.js
+app.use(express.urlencoded({extended:false}));//me habilita para recibir los datos del formulario de contacto en el req.body mediante el metodo post
+
+app.use(require('./routes/index'));//cargar funcionalidades de los routers, que pasa cuando entro a 'x' url. esta es para el index
+app.use(require('./routes/productos'));//cargar funcionalidades de los routers, que pasa cuando entro a 'x' url. esta es para productos
+app.use(require('./routes/contacto'));
 
 app.use((req,res,next)=>{
     res.status(404).send('Not found');//Como hago para devolver un HTML?
