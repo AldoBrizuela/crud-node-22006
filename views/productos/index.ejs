@@ -1,5 +1,16 @@
 <h2>Listado de productos</h2>
 
+<div class="row">
     <% productos.forEach(producto => { %>
-        <h3> <a href="/productos/<%- producto.id%>"><%= producto.name %></a></h3>
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title"><%= producto.nombre %></h5>
+                  <p class="card-text"><%= producto.descripcion %></p>
+                  <a href="/productos/<%- producto.codigo %>" class="btn btn-primary">Ver más</a>              
+                </div>
+              </div>
+        </div>
     <% }); %> <!-- armo enlases dinamicos a los productos del array al cual accedo mediante el objeto producto -->
+</div>
+    

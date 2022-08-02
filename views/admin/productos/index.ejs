@@ -1,0 +1,65 @@
+<h2>Listado de productos</h2>
+
+<a href="/admin/productos/create" class="btn btn-success"    >Crear Producto</a>
+
+<table class="table"><!-- solo para el admin armo la vista de una forma distinta -->
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Nombre</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% productos.forEach(producto => { %>
+        <tr>
+            <td><%= producto.codigo %></td>
+            <td><%= producto.nombre %></td>
+            <td>
+                <a href="/admin/productos/<%- producto.codigo %>" class="btn btn-primary">Ver más</a>
+                <a href="/admin/productos/<%- producto.codigo %>/edit" class="btn btn-warning">Editar</a> 
+              
+              <form class="form-delete" action="/admin/productos/<%- producto.codigo %>/delete?_method=DELETE" method="post" style="display:inline-block;">
+                  <button type="submit" class="btn btn-danger">Borrar</button>
+              </form>
+            </td> <!--muestro los botones de ver mas, editar, borr-->
+        </tr>
+        <% }); %> <!-- creo filas en la tabla por cada producto, armo enlases dinamicos a los productos del array al cual accedo mediante el objeto producto --> 
+    </tbody>
+</table>
+
+<!-- ########### Esta parte es para mostrar los productos en forma de tarjeta
+<div class="row">
+    <% productos.forEach(producto => { %>
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title"><%= producto.nombre %></h5>
+                  <p class="card-text"><%= producto.descripcion %></p>
+                  <a href="/admin/productos/<%- producto.codigo %>" class="btn btn-primary">Ver más</a>
+                  <a href="/admin/productos/<%- producto.codigo %>/edit" class="btn btn-warning">Editar</a> 
+                
+                <form class="form-delete" action="/admin/productos/<%- producto.codigo %>/delete?_method=DELETE" method="post" style="display:inline-block;">
+                    <button type="submit" class="btn btn-danger">Borrar</button>
+                </form>
+                
+                </div>
+              </div>
+        </div>
+    <% }); %> // armo enlases dinamicos a los productos del array al cual accedo mediante el objeto producto
+</div>
+-->
+
+<script>
+    document.addEventListener('submit', event =>{
+        if (event.target.classList.contains('form-delete')){
+            event.preventDefault();//si el submit detectado es del formulario de delete detiene la accion que este por default, es decir, no borra el producto 
+            
+            if (confirm('Esta seguro?')) {
+                event.target.submit();//pregunto al usuario si esta seguro de borrar el producto
+            }
+        }
+    }); //para obtener todos los eventos generados por un submit
+</script>
+
+   
