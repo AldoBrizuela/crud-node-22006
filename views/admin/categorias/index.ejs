@@ -1,0 +1,65 @@
+<h2>Listado de categorias</h2>
+
+<a href="/admin/categorias/create" class="btn btn-success"    >Crear Categoria</a>
+
+<table class="table"><!-- solo para el admin armo la vista de una forma distinta -->
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% categorias.forEach(categoria => { %>
+        <tr>
+            <td><%= categoria.id %></td>
+            <td><%= categoria.nombre %></td>
+            <td>
+                <a href="/admin/categorias/<%- categoria.id %>" class="btn btn-primary">Ver más</a>
+                <a href="/admin/categorias/<%- categoria.id %>/edit" class="btn btn-warning">Editar</a> 
+              
+              <form class="form-delete" action="/admin/categorias/<%- categoria.id %>/delete?_method=DELETE" method="post" style="display:inline-block;">
+                  <button type="submit" class="btn btn-danger">Borrar</button>
+              </form>
+            </td> <!--muestro los botones de ver mas, editar, borr-->
+        </tr>
+        <% }); %> <!-- creo filas en la tabla por cada categoria, armo enlases dinamicos a los categorias del array al cual accedo mediante el objeto categoria --> 
+    </tbody>
+</table>
+
+<!-- ########### Esta parte es para mostrar los categorias en forma de tarjeta
+<div class="row">
+    <% categorias.forEach(categoria => { %>
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title"><%= categoria.nombre %></h5>
+                  <p class="card-text"><%= categoria.descripcion %></p>
+                  <a href="/admin/categorias/<%- categoria.codigo %>" class="btn btn-primary">Ver más</a>
+                  <a href="/admin/categorias/<%- categoria.codigo %>/edit" class="btn btn-warning">Editar</a> 
+                
+                <form class="form-delete" action="/admin/categorias/<%- categoria.codigo %>/delete?_method=DELETE" method="post" style="display:inline-block;">
+                    <button type="submit" class="btn btn-danger">Borrar</button>
+                </form>
+                
+                </div>
+              </div>
+        </div>
+    <% }); %> // armo enlases dinamicos a los categorias del array al cual accedo mediante el objeto categoria
+</div>
+-->
+
+<script>
+    document.addEventListener('submit', event =>{
+        if (event.target.classList.contains('form-delete')){
+            event.preventDefault();//si el submit detectado es del formulario de delete detiene la accion que este por default, es decir, no borra el categoria 
+            
+            if (confirm('Esta seguro?')) {
+                event.target.submit();//pregunto al usuario si esta seguro de borrar el categoria
+            }
+        }
+    }); //para obtener todos los eventos generados por un submit
+</script>
+
+   

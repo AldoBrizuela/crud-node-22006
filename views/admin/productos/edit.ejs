@@ -1,7 +1,7 @@
 <h1>Editar Producto</h1>
 <div class="row justify-content-center">
     <div class="col-6">
-        <form action="/admin/productos/update?_method=PUT" method="post"><!-- poniendo ?_method=PUT puedo hacer el update de los productos -->
+        <form action="/admin/productos/update?_method=PUT" method="post" enctype="multipart/form-data"><!-- para poder manejar archivos uso el enctype recordar que siempre debe ser por post --><!-- poniendo ?_method=PUT puedo hacer el update de los productos -->
             <div>
                 <label for="codigo" class="form-label">Codigo: </label>
                 <input type="text" class="form-control" id="codigo" name="codigo" value="<%= producto.codigo%>" readonly>
@@ -9,6 +9,11 @@
             <div>
                 <label for="nombre" class="form-label">Nombre: </label>
                 <input type="text" class="form-control" id="nombre" name="nombre" value="<%= producto.nombre%>">
+            </div>
+            <div>
+                <label for="imagen" class="form-label">Imagen: </label>
+                <input type="file" class="form-control" id="imagen" name="imagen" accept="image/jpg"><!-- accept para filtrar que tipo de archivo dejo subir -->
+                <img width="100px" src="/uploads/producto_<%= producto.codigo %>.jpg" alt="<%= producto.nombre %>"><!-- para que en el editar tener el imput de la imagen del producto -->
             </div>
             <div>
                 <label for="descripcion" class="form-label">Descripcion: </label>

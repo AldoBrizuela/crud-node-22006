@@ -5,12 +5,16 @@ const app = express();
 const expressLayouts = require('express-ejs-layouts');//modulo para manejar vistas por ejemplo para manejar contenido dinamico
 const methodOverride = require('method-override');//modulo para poder hacer el CRUD
 const session = require('express-session');//requerimos el modulo de session
+const cookie = require('cookie-parser');//para usar cookies
+
+const sequelize = require('./db2');//requerimos la instancia con los datos de la BdD
 
 app.use(session({//configuro el modulo de session, el como se encriptan los datos lo maneja la libreria express-session
     secret: 'V9k_XMJtC.w]',//generar hash en alguna web (generador de password) para usarla de contrasena 
     resave:false,//para evitar el reguardado y mejorar la performance
     saveUninitialized: false // mejorar la performance
 }));
+app.use(cookie());//usar cookies
 
 app.set('view engine', 'ejs');//aviso a express que voy a usar este modulo para manejar vistas por ejemplo para manejar contenido dinamico
 
@@ -25,7 +29,7 @@ app.use(methodOverride('_method'));//configuro como voy a usar el methodo, sirve
 
 const isLogin = (req,res,next) => {//es next hace que siga si es que esta loguedo
     if (!req.session.user_id){//si no esta iniciada la sesion manda al login
-        res.redirect('/login');
+       return res.redirect('/login');
     }
 
     next();
@@ -35,7 +39,8 @@ app.use(require('./routes/index'));//cargar funcionalidades de los routers, que 
 app.use(require('./routes/productos'));//cargar funcionalidades de los routers, que pasa cuando entro a 'x' url. esta es para productos
 app.use(require('./routes/contacto'));
 
-app.use('/admin', isLogin ,require('./routes/admin/productos'));//cargar funcionalidades de los routers, que pasa cuando entro a 'x' url. esta es para productos, con prefijo /admin
+app.use('/admin', isLogin, require('./routes/admin/productos'));//cargar funcionalidades de los routers, que pasa cuando entro a 'x' url. esta es para productos, con prefijo /admin
+app.use('/admin', isLogin, require('./routes/admin/categorias'));//
 
 app.use(require('./routes/auth'));
 
@@ -47,4 +52,16 @@ app.use((req,res,next)=>{
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, ()=> console.log(`http://localhost:${port}`));
+app.listen(port, async ()=> { 
+    
+    console.log(`http://localhost:${port}`);
+
+    try {
+        // await sequelize.authenticate();// intenta autenticar con la base de datos, await para que espere la respuesta a la conexion para seguir
+        await sequelize.sync();// con sync si no existe la tabla categoria la crea, await para que espere la respuesta a la conexion para seguir
+
+        console.log('Sequelize ok');
+    } catch(error) {
+        console.log('Error de sequelize' + error);//si hay algun error en la conexion a la bdd
+    }
+});

@@ -1,0 +1,7 @@
+<% if (categoria) { %> <!-- pregunto si exite el categoria muestro id y name sino muestra No existe el categoria -->
+    <h2>codigo: <%= categoria.id %></h2> <!-- todo lo que este dentro de <%%> sera leido como javascript -->
+    <p><%= categoria.nombre %></p>
+    <p><%= categoria.description %></p>
+<% } else { %>
+    <p>No existe el categoria</p>
+<% } %>

@@ -1,5 +1,6 @@
+const { closeDelimiter } = require('ejs');
 const connection = require('../../db');
-
+const sharp = require('sharp');
 
 module.exports.index = (req,res)=>{// este modulo exporta una funcion que se llama index
     connection.query('SELECT * FROM productos',(error, results)=>{//traigo los productos de que estan en la base de datos
@@ -15,6 +16,8 @@ module.exports.create = (req,res)=>{
 };
 
 module.exports.store = (req,res) =>{
+    // console.log(req.file);
+    // sharp(req.file.buffer).resize(300).toFile('uploads/imagen.jpg');//cambiar el tamano de la imagen para optimizar el proyecto
     connection.query('INSERT INTO productos SET ?',
     {
         codigo:req.body.codigo,
@@ -24,6 +27,7 @@ module.exports.store = (req,res) =>{
     },
     (error, results)=>{
         if (error) {throw error}
+        sharp(req.file.buffer).resize(300).toFile(`./public/uploads/producto_${req.body.codigo}.jpg`);//cambiar el tamano de la imagen antes de guardarla para optimizar el proyecto
         res.redirect('/admin/productos');
     });
 };
@@ -54,9 +58,15 @@ module.exports.update = (req,res)=>{
         nombre : req.body.nombre,
         descripcion : req.body.descripcion,
         categoria_id : req.body.categoria
-    },req.body.codigo], (error,results)=>{
+    },req.body.codigo], async error =>{
         if (error) {throw error}
-        res.redirect('/admin/productos');
+        
+        if (req.file){//si existe un objeto lo guardo, await para que espere a guardar
+           await sharp(req.file.buffer).resize(300).toFile(`./public/uploads/producto_${req.body.codigo}.jpg`);//cambiar el tamano de la imagen antes de guardarla para optimizar el proyecto  
+           res.redirect('/admin/productos');
+        }else{
+            res.redirect('/admin/productos');
+        }      
     });
 };//con update actualizo el producto y vuelvo a la lista de productos
 
