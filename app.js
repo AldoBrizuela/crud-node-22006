@@ -6,6 +6,7 @@ const expressLayouts = require('express-ejs-layouts');//modulo para manejar vist
 const methodOverride = require('method-override');//modulo para poder hacer el CRUD
 const session = require('express-session');//requerimos el modulo de session
 const cookie = require('cookie-parser');//para usar cookies
+const cors = require('cors');//para permitir que aplicaciones hagan peticiones a la api
 
 const sequelize = require('./db2');//requerimos la instancia con los datos de la BdD
 
@@ -27,6 +28,9 @@ app.use(expressLayouts);//cuando tenga una vista primero va a traer este layout
 app.use(express.urlencoded({extended:false}));//me habilita para recibir los datos del formulario de contacto en el req.body mediante el metodo post
 app.use(methodOverride('_method'));//configuro como voy a usar el methodo, sirve para poder mandar put
 
+app.use(express.json());//me habilita recibir info a traves de json
+app.use(cors());//para permitir que aplicaciones hagan peticiones a la api
+
 const isLogin = (req,res,next) => {//es next hace que siga si es que esta loguedo
     if (!req.session.user_id){//si no esta iniciada la sesion manda al login
        return res.redirect('/login');
@@ -40,7 +44,11 @@ app.use(require('./routes/productos'));//cargar funcionalidades de los routers, 
 app.use(require('./routes/contacto'));
 
 app.use('/admin', isLogin, require('./routes/admin/productos'));//cargar funcionalidades de los routers, que pasa cuando entro a 'x' url. esta es para productos, con prefijo /admin
-app.use('/admin', isLogin, require('./routes/admin/categorias'));//
+app.use('/admin', isLogin, require('./routes/admin/categorias'));
+
+app.use('/api', require('./routes/api/categorias')); //para el logueo se usa un json ya que no hay front
+app.use('/api', require('./routes/api/jwt')); //para el logueo se usa un json ya que no hay front
+
 
 app.use(require('./routes/auth'));
 

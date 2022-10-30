@@ -1,5 +1,3 @@
-const { closeDelimiter } = require('ejs');
-
 const Categoria = require('../../models/Categoria');//requiero el modelo categoria que se creo con sequelize
 
 module.exports.index = (req,res)=>{// este modulo exporta una funcion que se llama index
