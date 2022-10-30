@@ -4,18 +4,23 @@ const express = require('express');
 const app = express();
 const expressLayouts = require('express-ejs-layouts');//modulo para manejar vistas por ejemplo para manejar contenido dinamico
 const methodOverride = require('method-override');//modulo para poder hacer el CRUD
-const session = require('express-session');//requerimos el modulo de session
-const cookie = require('cookie-parser');//para usar cookies
+//const session = require('express-session');//requerimos el modulo de session, para guardar la sesion en el servidor
+//const cookie = require('cookie-parser');//para usar cookies
+const session = require('cookie-session');//para guardar sesion en el cliente/navegador
 const cors = require('cors');//para permitir que aplicaciones hagan peticiones a la api
 
 const sequelize = require('./db2');//requerimos la instancia con los datos de la BdD
 
-app.use(session({//configuro el modulo de session, el como se encriptan los datos lo maneja la libreria express-session
-    secret: 'V9k_XMJtC.w]',//generar hash en alguna web (generador de password) para usarla de contrasena 
-    resave:false,//para evitar el reguardado y mejorar la performance
-    saveUninitialized: false // mejorar la performance
+//app.use(session({//configuro el modulo de session, el como se encriptan los datos lo maneja la libreria express-session
+//    secret: 'V9k_XMJtC.w]',//generar hash en alguna web (generador de password) para usarla de contrasena 
+//    resave:false,//para evitar el reguardado y mejorar la performance
+//    saveUninitialized: false // mejorar la performance
+//}));
+//app.use(cookie());//usar cookies
+
+app.use(session({//configuro el modulo de session, keys se usan para encriptar los datos lo maneja la libreria ookie-session
+    keys: ['QeThVmYq3t6w9z$C&F)J@NcRfUjXnZr4','+KbPeShVkYp3s6v9y$B&E)H@McQfTjWn']
 }));
-app.use(cookie());//usar cookies
 
 app.set('view engine', 'ejs');//aviso a express que voy a usar este modulo para manejar vistas por ejemplo para manejar contenido dinamico
 

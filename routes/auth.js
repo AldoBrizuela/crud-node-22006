@@ -18,7 +18,7 @@ router.post('/login', (req,res) => {
         } else if (await bcryptjs.compare(req.body.password, results[0].password) == false){//compare se usa para poder comparar la contrasena que esta encriptada, espera una promera de true o false para validar, como es una promesa tengo que esperar y usar async await
             res.send('El correo y/o contraseña son incorrectos');
         } else {
-            req.session.user_id = results[0].id;//guardo un dato en una variable de sesion
+            req.session.user_id = results[0].id;//guardo un dato en una variable de sesion esto despues se mantiendo mediante cookie-session
 
             res.redirect('/');
         }
